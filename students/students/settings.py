@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import os
+import dj_database_url
 
 from pathlib import Path
 
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-w$g+rcc$u(yp4wh@&1@w8y(#&!*!-f)k_=8!t7u-9y06m5-+ym
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.vercel.app']
 
 
 # Application definition
@@ -76,13 +78,17 @@ WSGI_APPLICATION = 'students.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'studentdb',       # The name of the database you created in Postgres
-        'USER': 'postgres',   # E.g., 'postgres'
-        'PASSWORD': 'root123',#your_postgres_password',
-        'HOST': 'localhost',                 # Set to 'localhost' or your server IP
-        'PORT': '5432',                      # Default PostgreSQL port is 5432
+        'NAME': 'studentdb',       
+        'USER': 'postgres',   
+        'PASSWORD': 'root123',
+        'HOST': 'localhost',                 
+        'PORT': '5432',                      
     }
 }
+
+# If DATABASE_URL is found in Vercel environment, override the local database
+if os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 
@@ -125,6 +131,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
