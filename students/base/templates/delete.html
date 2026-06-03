@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="card confirm-card">
+        <h1>Delete Student</h1>
+        <p>Are you sure you want to delete <strong>{{ student.name }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions" style="justify-content: center;">
+                <input type="submit" value="Delete" class="btn btn-delete">
+                <a href="{% url 'home' %}" class="btn btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

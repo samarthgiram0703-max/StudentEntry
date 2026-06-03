@@ -1,0 +1,86 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1>Student Records</h1>
+
+<!-- Advanced Search Form -->
+<div class="card" style="margin-bottom: 2rem; max-width: 100%;">
+    <h3 style="font-weight: 600; font-size: 1.125rem; color: var(--text-dark); margin-bottom: 1rem;">Advanced Search
+    </h3>
+    <form method="get" action="{% url 'home' %}"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search_name">Name:</label>
+            <input type="text" id="search_name" name="name" class="form-control"
+                value="{{ request.GET.name|default:'' }}" placeholder="Search by name...">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search_age">Age:</label>
+            <input type="number" id="search_age" name="age" class="form-control"
+                value="{{ request.GET.age|default:'' }}" placeholder="Search by age...">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search_grade">Grade:</label>
+            <input type="text" id="search_grade" name="grade" class="form-control"
+                value="{{ request.GET.grade|default:'' }}" placeholder="Search by grade...">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search_gender">Gender:</label>
+            <select id="search_gender" name="gender" class="form-control">
+                <option value="">Any</option>
+                <option value="Male" {% if request.GET.gender='Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if request.GET.gender='Female' %}selected{% endif %}>Female</option>
+                <option value="Other" {% if request.GET.gender='Other' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search_location">Location:</label>
+            <input type="text" id="search_location" name="location" class="form-control"
+                value="{{ request.GET.location|default:'' }}" placeholder="Search by location...">
+        </div>
+        <div style="display: flex; align-items: flex-end; gap: 0.5rem;">
+            <button type="submit" class="btn btn-submit" style="flex: 1; padding: 0.625rem;">Search</button>
+            <a href="{% url 'home' %}" class="btn btn-cancel"
+                style="flex: 1; padding: 0.625rem; text-align: center;">Reset</a>
+        </div>
+    </form>
+</div>
+
+<a href="{% url 'add_student' %}" class="btn btn-add">Add Student</a>
+
+{% if students %}
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+                <th>Gender</th>
+                <th>Mobile Number</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.grade }}</td>
+                <td>{{ student.gender }}</td>
+                <td>{{ student.mobile_number }}</td>
+                <td>{{ student.location }}</td>
+                <td class="actions-cell">
+                    <a href="{% url 'update_student' student.id %}" class="btn btn-update">Update</a>
+                    <a href="{% url 'delete_student' student.id %}" class="btn btn-delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No student records found. Click "Add Student" to create one.</p>
+{% endif %}
+{% endblock %}

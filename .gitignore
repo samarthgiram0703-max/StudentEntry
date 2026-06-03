@@ -1,0 +1,15 @@
+# Virtual environment
+virtual/
+
+# Databases
+*.sqlite3
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# IDEs and OS metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
